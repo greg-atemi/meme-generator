@@ -7,12 +7,27 @@ export default function Main() {
         imageUrl: "http://i.imgflip.com/1bij.jpg"
     });
 
+    const [memesArray, setMemesArray] = React.useState([]);
+
     function handleChange(event) {
         const {name, value} = event.target;
         setMeme(prevMeme => ({
             ...prevMeme, [name]: value
         }));
     }
+
+    React.useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(response => response.json())
+            .then(data => {
+                const memesArray = data.data.memes;
+                setMemesArray(prevMemesArray => ({
+                    ...prevMemesArray, [memesArray]: memesArray
+                }));
+            });
+        console.log("Get a new meme image clicked");
+        console.log(meme.imageUrl);    
+    }, [])
 
     return (
         <main>
