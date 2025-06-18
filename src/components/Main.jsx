@@ -21,13 +21,17 @@ export default function Main() {
             .then(response => response.json())
             .then(data => {
                 const memesArray = data.data.memes;
-                setMemesArray(prevMemesArray => ({
-                    ...prevMemesArray, [memesArray]: memesArray
-                }));
-            });
-        console.log("Get a new meme image clicked");
-        console.log(meme.imageUrl);    
+                setMemesArray(memesArray);
+            });    
     }, [])
+
+    function toggleMeme(event) {
+        const randomIndex = Math.floor(Math.random() * memesArray.length);
+        const randomMeme = memesArray[randomIndex];
+        setMeme(prevMeme => ({
+            ...prevMeme, imageUrl: randomMeme.url
+        }));
+    }
 
     return (
         <main>
@@ -51,7 +55,7 @@ export default function Main() {
                         value={meme.bottomText}
                     />
                 </label>
-                <button>Get a new meme image 🖼</button>
+                <button onClick={toggleMeme}>Get a new meme image 🖼</button>
             </div>
             <div className="meme">
                 <img src={meme.imageUrl} />
